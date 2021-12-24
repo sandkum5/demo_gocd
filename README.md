@@ -2,7 +2,7 @@
 Demo Repo test CICD using gocd
 
 
-Create gocd Agent docker image and container with terraform
+Create gocd Agent docker image and container with terraform installed
 
 - Build Image
 ```
