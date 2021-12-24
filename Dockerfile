@@ -6,20 +6,16 @@ RUN apt-get update && \
     curl https://download.gocd.org/GOCD-GPG-KEY.asc | apt-key add - && \
     apt-get update && \
     apt-get install go-agent && \
-    sed -i "s/localhost/172.16.221.45/g" /usr/share/go-agent/wrapper-config/wrapper-properties.conf && \
-    echo "#!/bin/bash" > /home/docker-entrypoint.sh && \
-    echo "/etc/init.d/go-agent start" >> /home/docker-entrypoint.sh && \
-    echo "while true; do" >> /home/docker-entrypoint.sh && \
-    echo "  sleep 100" >> /home/docker-entrypoint.sh && \
-    echo "done" >> /home/docker-entrypoint.sh && \
-    chmod +x /home/docker-entrypoint.sh && \
     curl -L -O https://releases.hashicorp.com/terraform/1.1.2/terraform_1.1.2_linux_amd64.zip && \
     unzip terraform_1.1.2_linux_amd64.zip && \
     mv terraform /usr/bin/ && \
     rm /terraform_1.1.2_linux_amd64.zip && \
+    sed -i "s/localhost/172.16.221.45/g" /usr/share/go-agent/wrapper-config/wrapper-properties.conf && \
+    echo "#!/bin/bash" > /home/docker-entrypoint.sh && \
+    echo "/etc/init.d/go-agent start" >> /home/docker-entrypoint.sh && \
+    echo "while true; do sleep 100; done" >> /home/docker-entrypoint.sh && \
+    chmod +x /home/docker-entrypoint.sh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR /home
-
-ENTRYPOINT  ["./docker-entrypoint.sh"]
+ENTRYPOINT  ["/home/docker-entrypoint.sh"]
