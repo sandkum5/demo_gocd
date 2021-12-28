@@ -1,5 +1,5 @@
-# cicd-demo
-Demo Repo test CICD using gocd
+# demo_gocd
+Demo Repo to test CICD workflow using gocd
 
 
 ### GOCD Server
