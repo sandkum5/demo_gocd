@@ -2,6 +2,10 @@
 Demo Repo to test CICD workflow using gocd
 
 
+Host: 172.16.221.45
+- Container1: gocd server
+- Container2: gocd agent
+
 ### GOCD Server
 ```
 docker run -d -p8153:8153 gocd/gocd-server:v21.3.0
