@@ -1,0 +1,93 @@
+format_version: 10
+pipelines:
+  tf-intersight:
+    group: defaultGroup
+    label_template: ${COUNT}
+    lock_behavior: unlockWhenFinished
+    display_order: -1
+    materials:
+      git-8b22e07:
+        git: http://172.16.221.45:3000/demo/demo1.git
+        shallow_clone: false
+        auto_update: true
+        branch: master
+    stages:
+    - Linting:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          fmt:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - fmt
+                command: terraform
+                run_if: passed
+          validate:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - init
+                command: terraform
+                run_if: passed
+            - exec:
+                arguments:
+                - validate
+                command: terraform
+                run_if: passed
+    - Plan:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          tf_plan:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - init
+                command: terraform
+                run_if: passed
+            - exec:
+                arguments:
+                - plan
+                - -out=tfplan
+                command: terraform
+                run_if: passed
+    - Apply:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          tf_apply:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - init
+                command: terraform
+                run_if: passed
+            - exec:
+                arguments:
+                - plan
+                - -out=tfplan
+                command: terraform
+                run_if: passed
+            - exec:
+                arguments:
+                - apply
+                - -auto-approve
+                command: terraform
+                run_if: passed
