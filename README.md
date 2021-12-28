@@ -6,6 +6,9 @@ Host: 172.16.221.45
 - Container1: gocd server
 - Container2: gocd agent
 
+While Loop added to keep the container running:
+while true; do sleep 100; done 
+
 ### GOCD Server
 ```
 docker run -d -p8153:8153 gocd/gocd-server:v21.3.0
